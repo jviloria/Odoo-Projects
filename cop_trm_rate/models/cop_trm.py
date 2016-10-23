@@ -35,21 +35,31 @@ BANREP_URL ="http://obieebr.banrep.gov.co/analytics/saw.dll?Go&path=/shared/Seri
 class trmColombian(models.Model):
     _inherit = 'res.currency.rate'
 
+    def _banrep_scraping(self):
+        res = False
+        driver = webdriver.PhantomJS(service_log_path=path.devnull)
+        for x in range(1,5):    # 5 intentos de obtener la trm
+            driver.get(BANREP_URL)
+            try:
+                res = driver.find_element_by_xpath("//strong")
+                res = res.text
+                break
+            except:
+                pass
+        driver.close()
+        return res
+
     @api.model
     def get_colombian_trm(self):    #Este método debe ser llamado por un cron de Odoo
-        try:
-            driver = webdriver.PhantomJS(service_log_path=path.devnull)
-            driver.get(BANREP_URL)
-            res = driver.find_element_by_xpath("//strong")  #Se localiza el tag strong, el cual contiene el TRM
-            trm = res.text
-            driver.close()
+        trm = self._banrep_scraping()
+        if trm:
             try:
                 trm = trm.replace(".","").replace(",",".")  #Preparación para conversión
                 trm = float(trm)                            #a Float
             except:
                 trm = trm.replace(",","").replace(".",",")
                 trm = float(trm)
-        except:
+        else:
             trm = 0
         currency_id = self.env['res.currency'].search([('name','in',('USD','usd'))])[0].id
         try:
