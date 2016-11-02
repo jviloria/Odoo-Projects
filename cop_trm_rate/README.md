@@ -3,19 +3,15 @@
 This module allows get the official TRM rate from [Banco de la Republica](http://banrep.gov.co/trm)
 
 
-## External Dependencies
+## Requirements
 
-* Python Selenium: 
+* Python suds: 
 
 		$sudo apt-get update
-		$sudo apt-get install python-pip
-		$sudo pip install selenium
-
-* Python PhantomJS: 
-		
-		$sudo apt-get install phantomjs
+		$sudo apt-get install python-suds
 
 
-## Notes
+## Contributors
 
-If you get an error in PhantomJS install, go to [How to install PhantomJS on Ubuntu](https://gist.github.com/julionc/7476620).
+* John W. Viloria Amaris <john.viloria.amaris@gmail.com>
+* Christian Camilo Camargo <ccamargov20@gmail.com﻿>
