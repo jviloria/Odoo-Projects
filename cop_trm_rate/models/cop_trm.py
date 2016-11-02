@@ -26,41 +26,52 @@
 ##############################################################################
 
 from openerp import models, api
-from selenium import webdriver
-from os import path
+from suds.client import Client
+from datetime import datetime
+import suds
+import xml.etree.ElementTree as ET
+import logging
 
-BANREP_URL ="http://obieebr.banrep.gov.co/analytics/saw.dll?Go&path=/shared/Series%20Estad%C3%ADsticas/1.%20Tasa%20de%20Cambio%20Peso%20Colombiano/1.1%20TRM%20-%20Disponible%20desde%20el%2027%20de%20noviembre%20de%201991/1.1.6.TCM_TRM%20para%20un%20d%C3%ADa&lang=es&options=rdf&NQUser=publico&NQPassword=publico"
+_logger = logging.getLogger(__name__)
+
+BANREP_URL ="http://obiee.banrep.gov.co/analytics/saw.dll?wsdl"
 
 
 class trmColombian(models.Model):
     _inherit = 'res.currency.rate'
 
-    def _banrep_scraping(self):
-        res = False
-        driver = webdriver.PhantomJS(service_log_path=path.devnull)
-        for x in range(1,5):    # 5 intentos de obtener la trm
-            driver.get(BANREP_URL)
-            try:
-                res = driver.find_element_by_xpath("//strong")
-                res = res.text
-                break
-            except:
-                pass
-        driver.close()
-        return res
+    def _get_soap_trm(self):
+        rate_date = False
+        rate_value = 0.0
+        client = Client(BANREP_URL, service = "SAWSessionService")
+        session_id = client.service.logon("publico", "publico")
+        client.set_options(service = "XmlViewService")
+        report = {
+            "reportPath": "/shared/Consulta Series Estadisticas desde Excel/1. Tasa de Cambio Peso Colombiano/1.1 TRM - Disponible desde el 27 de noviembre de 1991/1.1.3 Serie historica para un rango de fechas dado",
+            "reportXml": "null"
+        }
+        options = {
+            "async" : "false",
+            "maxRowsPerPage" : "100",
+            "refresh" : "true",
+            "presentationInfo" : "true"
+        }
+        try:
+            result_query = client.service.executeXMLQuery(report, "SAWRowsetData", options, session_id)
+            client.set_options(service = "SAWSessionService")
+            #client.service.logoff(session_id)
+            xml_data = ET.fromstring(result_query.rowset)
+            rate_name = xml_data[0][1].text
+            rate_value = float(xml_data[0][2].text)
+        except suds.WebFault as detail:
+            _logger.critical("Error while working with BancoRep API: " + detail)
+        client.service.logoff(session_id)
+        return rate_name, rate_value
 
     @api.model
     def get_colombian_trm(self):    #Este método debe ser llamado por un cron de Odoo
-        trm = self._banrep_scraping()
-        if trm:
-            try:
-                trm = trm.replace(".","").replace(",",".")  #Preparación para conversión
-                trm = float(trm)                            #a Float
-            except:
-                trm = trm.replace(",","").replace(".",",")
-                trm = float(trm)
-        else:
-            trm = 0
+        rate_name, trm = self._get_soap_trm()
+        _logger.critical("Name: %s - Tasa: %s "%(rate_name, trm))
         currency_id = self.env['res.currency'].search([('name','in',('USD','usd'))])[0].id
         try:
             old_trm = self.search([('currency_id','=',currency_id)], limit=1, order='id desc')[0].rate
@@ -70,6 +81,7 @@ class trmColombian(models.Model):
             vals = {
                 'rate': trm,
                 'currency_id': currency_id,
+                'name': rate_name,
                 'company_id': self.env.user.company_id.id
             }
             self.create(vals)
