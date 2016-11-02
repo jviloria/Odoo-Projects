@@ -3,6 +3,7 @@
 #
 #    OpenERP, Open Source Management Solution
 #    John W. Viloria Amaris <john.viloria.amaris@gmail.com>
+#    Christian Camilo Camargo
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -16,12 +17,6 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
-##############################################################################
-#
-# Dependencias:   -- python selenium [sudo apt-get -y install python-pip;sudo pip install selenium]
-#                 -- python PhantomJS [sudo apt-get -y install phantomjs]
-# NOTA: Si se presenta error al instalar PhantomJS, seguir los pasos de la url: https://gist.github.com/julionc/7476620
 #
 ##############################################################################
 
@@ -41,7 +36,7 @@ class trmColombian(models.Model):
     _inherit = 'res.currency.rate'
 
     def _get_soap_trm(self):
-        rate_date = False
+        rate_name = False
         rate_value = 0.0
         client = Client(BANREP_URL, service = "SAWSessionService")
         session_id = client.service.logon("publico", "publico")
@@ -59,12 +54,11 @@ class trmColombian(models.Model):
         try:
             result_query = client.service.executeXMLQuery(report, "SAWRowsetData", options, session_id)
             client.set_options(service = "SAWSessionService")
-            #client.service.logoff(session_id)
             xml_data = ET.fromstring(result_query.rowset)
             rate_name = xml_data[0][1].text
             rate_value = float(xml_data[0][2].text)
         except suds.WebFault as detail:
-            _logger.critical("Error while working with BancoRep API: " + detail)
+            _logger.critical("Error while fetching info from BancoRep API: " + detail)
         client.service.logoff(session_id)
         return rate_name, rate_value
 
