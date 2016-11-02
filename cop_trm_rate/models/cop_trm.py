@@ -3,7 +3,7 @@
 #
 #    OpenERP, Open Source Management Solution
 #    John W. Viloria Amaris <john.viloria.amaris@gmail.com>
-#    Christian Camilo Camargo
+#    Christian Camilo Camargo <ccamargov20@gmail.com﻿>
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -23,8 +23,8 @@
 from openerp import models, api
 from suds.client import Client
 from datetime import datetime
-import suds
 import xml.etree.ElementTree as ET
+import suds
 import logging
 
 _logger = logging.getLogger(__name__)
@@ -65,7 +65,6 @@ class trmColombian(models.Model):
     @api.model
     def get_colombian_trm(self):    #Este método debe ser llamado por un cron de Odoo
         rate_name, trm = self._get_soap_trm()
-        _logger.critical("Name: %s - Tasa: %s "%(rate_name, trm))
         currency_id = self.env['res.currency'].search([('name','in',('USD','usd'))])[0].id
         try:
             old_trm = self.search([('currency_id','=',currency_id)], limit=1, order='id desc')[0].rate
@@ -76,6 +75,5 @@ class trmColombian(models.Model):
                 'rate': trm,
                 'currency_id': currency_id,
                 'name': rate_name,
-                'company_id': self.env.user.company_id.id
             }
             self.create(vals)
