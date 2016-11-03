@@ -4,10 +4,10 @@
 
     <!-- Cron -->
 
-        <record model="ir.cron" id="ir_cron_trm_check_every_half_hour">
+        <record model="ir.cron" id="ir_cron_trm_check_every_hour">
             <field name="name">TRM: Check for Update</field>
-            <field name="interval_number">30</field>
-            <field name="interval_type">minutes</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
             <field name="numbercall">-1</field>
             <field name="doall" eval="False"/>
             <field name="model" eval="'res.currency.rate'"/>
