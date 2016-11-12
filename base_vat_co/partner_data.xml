@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <!-- TIPOS DE DOCUMENTOS VALIDOS SEGUN LA DIAN 
+        (http://www.dian.gov.co/descargas/normatividad/Factura_Electronica/Anexo_001_R14465.pdf) -->
+        <record id="res_partner_doc_type_TI" model="res.partner.document.type">
+            <field name="name">Tarjeta de Identidad</field>
+            <field name="code">12</field>
+        </record>
+        <record id="res_partner_doc_type_CC" model="res.partner.document.type">
+            <field name="name">Cédula de Ciudadanía</field>
+            <field name="code">13</field>
+        </record>
+        <record id="res_partner_doc_type_TEXTRAN" model="res.partner.document.type">
+            <field name="name">Tarjeta de Extranjería</field>
+            <field name="code">21</field>
+        </record>
+        <record id="res_partner_doc_type_CEXTRAN" model="res.partner.document.type">
+            <field name="name">Cédula de Extranjería</field>
+            <field name="code">22</field>
+        </record>
+        <record id="res_partner_doc_type_NIT" model="res.partner.document.type">
+            <field name="name">NIT/RUT</field>
+            <field name="code">31</field>
+            <field name="checking_required" eval="True"/>
+        </record>
+        <record id="res_partner_doc_type_PAS" model="res.partner.document.type">
+            <field name="name">Pasaporte</field>
+            <field name="code">41</field>
+        </record>
+        <record id="res_partner_doc_type_IDEXTRAN" model="res.partner.document.type">
+            <field name="name">Documento de Identificación Extranjero</field>
+            <field name="code">42</field>
+        </record>
+        <record id="res_partner_doc_type_NOIDEXTRAN" model="res.partner.document.type">
+            <field name="name">Sin identificación del exterior o para uso definido por la DIAN</field>
+            <field name="code">43</field>
+        </record>
+
+    </data>
+</openerp>
