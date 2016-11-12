@@ -19,8 +19,18 @@
 #
 ##############################################################################
 
-from odoo import api, models, _
+from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+
+
+class ResPartnerDocumentType(models.Model):
+    _name = 'res.partner.document.type'
+    _description = 'Partner Document Type'
+
+    name = fields.Char('Document Type', size=50, required=True)
+    code = fields.Char('Code', size=2, required=True)
+    checking_required = fields.Boolean('VAT Check Required',
+        default=False)
 
 
 class ResPartner(models.Model):
