@@ -31,7 +31,8 @@ Module for Colombian Rut/Nit checking.
     "category":"Invoice",
     "author":"John Viloria Amaris",
     "data":[
-        "partner_data.xml"
+        "partner_data.xml",
+        "views/res_partner_view.xml"
     ],
     "installable":True
  }

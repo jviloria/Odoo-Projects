@@ -36,6 +36,9 @@ class ResPartnerDocumentType(models.Model):
 class ResPartner(models.Model):
     _inherit = ['res.partner']
 
+    document_type_id = fields.Many2one('res.partner.document.type',
+        'Partner Document Type')
+
     @api.constrains("vat")
     def check_vat(self):
         '''
