@@ -21,7 +21,9 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
+import logging
 
+_logger = logging.getLogger(__name__)
 
 class ResPartnerDocumentType(models.Model):
     _name = 'res.partner.document.type'
@@ -39,12 +41,13 @@ class ResPartner(models.Model):
     document_type_id = fields.Many2one('res.partner.document.type',
         'Partner Document Type')
 
-    @api.constrains("vat")
+    @api.constrains('vat','document_type_id')
     def check_vat(self):
         '''
         Check the VAT number depending of the country.
         http://sima-pc.com/nif.php
         '''
+        msg = 'The Vat does not seems to be correct.'
         for partner in self:
             if not partner.vat:
                 continue
@@ -56,10 +59,15 @@ class ResPartner(models.Model):
             if not hasattr(self, 'check_vat_' + vat_country):
                 continue
             check = getattr(self, 'check_vat_' + vat_country)
-            if not check(vat_number):
-                raise ValidationError(
-                    _('The Vat does not seems to be correct.')
-                )
+            if partner.document_type_id:
+                _logger.critical("PRIMERA")
+                if partner.document_type_id.checking_required:
+                    if not check(vat_number):
+                        raise ValidationError(_(msg))
+            else:
+                if not check(vat_number):
+                    raise ValidationError(_(msg))
+        return True
 
     def check_vat_co(self, vat):
         '''
