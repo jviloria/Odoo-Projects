@@ -6,15 +6,61 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 10.0-20161025\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-12 05:10+0000\n"
-"PO-Revision-Date: 2016-11-12 00:12-0500\n"
+"POT-Creation-Date: 2016-11-14 03:44+0000\n"
+"PO-Revision-Date: 2016-11-13 22:49-0500\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_CO\n"
 "X-Generator: Poedit 1.5.4\n"
+"Language: es_CO\n"
+
+#. module: base_vat_co
+#: model:ir.model.fields,field_description:base_vat_co.field_res_partner_document_type_code
+msgid "Code"
+msgstr "Código"
+
+#. module: base_vat_co
+#: model:ir.model.fields,field_description:base_vat_co.field_res_partner_document_type_create_uid
+msgid "Created by"
+msgstr "Creado por"
+
+#. module: base_vat_co
+#: model:ir.model.fields,field_description:base_vat_co.field_res_partner_document_type_create_date
+msgid "Created on"
+msgstr "Creado"
+
+#. module: base_vat_co
+#: model:ir.model.fields,field_description:base_vat_co.field_res_partner_document_type_display_name
+msgid "Display Name"
+msgstr "Nombre Público"
+
+#. module: base_vat_co
+#: model:ir.model.fields,field_description:base_vat_co.field_res_partner_document_type_id_3720
+#: model:ir.model.fields,field_description:base_vat_co.field_res_partner_document_type_name
+msgid "Document Type"
+msgstr "Tipo Documento"
+
+#. module: base_vat_co
+#: model:ir.model.fields,field_description:base_vat_co.field_res_partner_document_type_id
+msgid "ID"
+msgstr "ID"
+
+#. module: base_vat_co
+#: model:ir.model.fields,field_description:base_vat_co.field_res_partner_document_type___last_update
+msgid "Last Modified on"
+msgstr "Última Modificación el"
+
+#. module: base_vat_co
+#: model:ir.model.fields,field_description:base_vat_co.field_res_partner_document_type_write_uid
+msgid "Last Updated by"
+msgstr "Actualizado por"
+
+#. module: base_vat_co
+#: model:ir.model.fields,field_description:base_vat_co.field_res_partner_document_type_write_date
+msgid "Last Updated on"
+msgstr "Actualizado"
 
 #. module: base_vat_co
 #: model:ir.model,name:base_vat_co.model_res_partner
@@ -22,7 +68,11 @@ msgid "Partner"
 msgstr "Asociado"
 
 #. module: base_vat_co
-#: code:addons/base_vat_co/models/partner.py:48
-#, python-format
-msgid "The Vat does not seems to be correct."
-msgstr "El RUT/NIT introducido no parece estar correcto."
+#: model:ir.model,name:base_vat_co.model_res_partner_document_type
+msgid "Partner Document Type"
+msgstr "Tipo Documento del Cliente"
+
+#. module: base_vat_co
+#: model:ir.model.fields,field_description:base_vat_co.field_res_partner_document_type_checking_required
+msgid "VAT Check Required"
+msgstr "Verificación Requerida"
