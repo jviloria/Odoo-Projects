@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<openerp>
+<odoo>
     <data noupdate="1">
 
         <!-- TIPOS DE DOCUMENTOS VALIDOS SEGUN LA DIAN 
@@ -39,4 +39,4 @@
         </record>
 
     </data>
-</openerp>
+</odoo>
