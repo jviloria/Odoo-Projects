@@ -6,8 +6,11 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base_vat.view_partner_form"/>
         <field name="arch" type="xml">
-            <field name="vat" position="before">
-                <field name="document_type_id" widget="selection"/>
+            <field name="property_account_position_id" position="after">
+                <label for="document_type_id"/>
+                <div name="doc_type" class="o_row">
+                    <field name="document_type_id" widget="selection"/>
+                </div>
             </field>
         </field>
     </record>
